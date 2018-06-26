@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Redirecting iFrame Parent</title>
+    </head>
+    <body>
+        <p>I'm the parent</p>
+        <iframe src="/iframe"></iframe>
+        <script>
+            window.addEventListener("message", message => {
+                window.document.location.href = message.data;
+            }, false);
+        </script>
+    </body>
+</html>

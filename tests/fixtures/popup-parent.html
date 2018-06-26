@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Basic Document</title>
+    </head>
+    <body>
+        <p>I open a popup</p>
+        <script>
+            document.load = () => {
+                window.open("/popup", "popup", "width=420,height=230");
+            };
+        </script>
+    </body>
+</html>

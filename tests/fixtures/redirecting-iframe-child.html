@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Redirecting iFrame Parent</title>
+    </head>
+    <body>
+        <p>I'm the child</p>
+        <a href="https://doesnotexist.co.uk">This is a bad link</a>
+        <script>
+            document.getElementsByTagName("a")[0].addEventListener("click", event => {
+                const target = event.target;
+                window.parent.postMessage(target.href, "*");
+                event.preventDefault();
+                event.stopPropagation();
+            }, false);
+        </script>
+    </body>
+</html>

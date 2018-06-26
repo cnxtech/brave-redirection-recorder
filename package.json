@@ -1,0 +1,22 @@
+{
+  "name": "brave-redirection-grapher",
+  "version": "1.0.0",
+  "description": "Lambda function for measuring web redirections",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha tests/*",
+    "lint": "node node_modules/eslint/bin/eslint.js .",
+    "lint:fix": "node node_modules/eslint/bin/eslint.js . --fix"
+  },
+  "author": "Peter Snyder <pes@brave.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "parse-domain": "^2.1.2",
+    "puppeteer": "^1.5.0",
+    "shuffle-array": "^1.0.1"
+  }
+}
