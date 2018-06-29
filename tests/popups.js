@@ -43,11 +43,12 @@ describe("popups", function () {
     describe("new pages", function () {
         this.timeout(10000);
 
-        it("Replacing main page", function (done) {
+        it("full page popup", function (done) {
+            crawler.setIsTesting(true);
             const onServer = handle => {
                 const crawlArgs = {
                     url: "http://" + handle.host + "/",
-                    seconds: 6,
+                    seconds: 15,
                 };
 
                 crawler.crawl(crawlArgs, results => {
@@ -78,7 +79,7 @@ describe("popups", function () {
             testServer.create({
                 "/": {
                     code: 200,
-                    fixture: "simple-link.html",
+                    fixture: "new-tab-link.html",
                 },
                 "/link": {
                     code: 200,

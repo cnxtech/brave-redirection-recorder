@@ -17,9 +17,9 @@ describe("links", function () {
                 };
 
                 crawler.crawl(crawlArgs, results => {
-                    assert.equal(results.length, 4);
 
-                    const [first, second, third, fourth] = results;
+                    assert.equal(results.length, 3);
+                    const [first, second, third] = results;
 
                     assert.equal(first.type, "navigation");
                     assert.equal(first.requestedUrl, "http://" + handle.host + "/");
@@ -34,11 +34,6 @@ describe("links", function () {
                     const childFrameId = third.frameId;
                     assert.notEqual(childFrameId, firstFrameId);
                     assert.equal(third.url, "http://" + handle.host + "/iframe");
-
-                    // Request entry for the child frame redirection
-                    assert.equal(fourth.type, "request");
-                    assert.equal(fourth.frameId, childFrameId);
-                    assert.equal(fourth.url, "https://doesnotexist.co.uk/");
 
                     handle.close();
                     done();

@@ -28,7 +28,6 @@ const localResourcesDir = path.join(__dirname, "resources");
 const chromeHeadlessPath = path.join(localResourcesDir, "headless-chromium");
 
 const handler = (args, _, callback) => {
-    console.log("A");
     const validationResult = utilsLib.validateArgs(args);
     if (validationResult !== undefined) {
         throw validationResult.msg;
@@ -59,7 +58,6 @@ const handler = (args, _, callback) => {
         }
 
         let s3KeyHandle;
-
         s3Lib.record(crawlArgs.url, args.bucket, crawlResults, crawlArgs.debug)
             .then(s3Key => {
                 s3KeyHandle = s3Key;
@@ -73,6 +71,5 @@ const handler = (args, _, callback) => {
 
     crawlLib.crawl(crawlArgs, onCrawlComplete);
 };
-
 
 module.exports.handler = handler;
