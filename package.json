@@ -4,6 +4,7 @@
   "description": "Lambda function for measuring web redirections",
   "main": "index.js",
   "scripts": {
+    "bundle": "make lambda",
     "test": "node_modules/mocha/bin/mocha tests/*",
     "lint": "node node_modules/eslint/bin/eslint.js .",
     "lint:fix": "node node_modules/eslint/bin/eslint.js . --fix"
@@ -17,6 +18,7 @@
   "dependencies": {
     "parse-domain": "^2.1.2",
     "puppeteer": "^1.5.0",
-    "shuffle-array": "^1.0.1"
+    "shuffle-array": "^1.0.1",
+    "uuid": "^3.3.0"
   }
 }

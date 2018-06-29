@@ -2,6 +2,7 @@
 
 const http = require("http");
 const fs = require("fs");
+const path = require("path");
 
 // End points should be mappings of
 //  <http path> -> {
@@ -21,7 +22,9 @@ const createTestServer = (endPoints, done) => {
             return;
         }
 
-        if (endpointDef.code === 301) {
+        const code = endpointDef.code || 200;
+
+        if (code === 301) {
             res.writeHead(301, {
                 "Location": "http://" + req.headers["host"] + endpointDef.response,
             });
@@ -33,18 +36,19 @@ const createTestServer = (endPoints, done) => {
         let responseBody;
 
         if (endpointDef.fixture) {
-            responseBody = fs.readFileSync(endpointDef.fixture, "utf8");
+            const fixturePath = path.join(".", "tests", "fixtures", endpointDef.fixture);
+            responseBody = fs.readFileSync(fixturePath, "utf8");
             contentType = "text/html";
         } else {
             responseBody = endpointDef.response;
             contentType = "text/plain";
         }
 
-        res.writeHead(endpointDef.code, {"Content-Type": contentType});
+        res.writeHead(code, {"Content-Type": contentType});
         res.end(responseBody);
     });
 
-    const state = {
+    const handle = {
         host: undefined,
         close: () => {
             server.close();
@@ -52,11 +56,11 @@ const createTestServer = (endPoints, done) => {
     };
 
     server.listen(0, "0.0.0.0", _ => {
-        state.host = "localhost:" + server.address().port;
-        done();
+        handle.host = "localhost:" + server.address().port;
+        done(handle);
     });
 
-    return state;
+    return handle;
 };
 
 module.exports.create = createTestServer;
