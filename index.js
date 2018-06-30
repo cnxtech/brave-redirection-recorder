@@ -35,7 +35,7 @@ const handler = (args, _, callback) => {
 
     const crawlArgs = {
         url: args.url,
-        seconds: (args.seconds || 240) * 1000,
+        seconds: (args.seconds || 240),
         debug: args.debug || false,
     };
 

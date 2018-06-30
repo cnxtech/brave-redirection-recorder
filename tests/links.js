@@ -17,7 +17,6 @@ describe("links", function () {
                 };
 
                 crawler.crawl(crawlArgs, results => {
-
                     assert.equal(results.length, 3);
                     const [first, second, third] = results;
 
