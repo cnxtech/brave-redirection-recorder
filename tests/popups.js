@@ -20,7 +20,7 @@ describe("popups", function () {
                     assert.equal(results.length, 1);
                     const [first] = results;
                     assert.equal(first.type, "navigation");
-                    assert.equal(first.requestedUrl, "http://" + handle.host + "/");
+                    assert.equal(first.url, "http://" + handle.host + "/");
 
                     handle.close();
                     done();
@@ -54,9 +54,9 @@ describe("popups", function () {
                     const [first, second] = results;
 
                     assert.equal(first.type, "navigation");
-                    assert.equal(first.requestedUrl, "http://" + handle.host + "/");
+                    assert.equal(first.url, "http://" + handle.host + "/");
                     assert.equal(second.type, "navigation");
-                    assert.equal(second.requestedUrl, "http://" + handle.host + "/link");
+                    assert.equal(second.url, "http://" + handle.host + "/link");
 
                     assert.equal(first.frameId, second.frameId);
 

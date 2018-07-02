@@ -20,7 +20,7 @@ describe("redirects", function () {
                     assert.equal(results.length, 3);
                     const [first, second, third] = results;
                     assert.equal(first.type, "navigation");
-                    assert.equal(first.requestedUrl, "http://" + handle.host + "/1");
+                    assert.equal(first.url, "http://" + handle.host + "/1");
 
                     const firstFrameId = first.frameId;
                     assert.equal(second.type, "request");
@@ -69,7 +69,7 @@ describe("redirects", function () {
                     const [first, second] = results;
 
                     assert.equal(first.type, "navigation");
-                    assert.equal(first.requestedUrl, testHost + "/1");
+                    assert.equal(first.url, testHost + "/1");
 
                     assert.equal(second.type, "request");
                     assert.equal(second.url, testHost + "/2");

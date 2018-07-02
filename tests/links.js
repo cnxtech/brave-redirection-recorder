@@ -23,11 +23,11 @@ describe("links", function () {
                     const [first, second, third] = results;
 
                     assert.equal(first.type, "navigation");
-                    assert.equal(first.requestedUrl, rootUrl);
+                    assert.equal(first.url, rootUrl);
                     const firstFrameId = first.frameId;
 
                     assert.equal(second.type, "navigation");
-                    assert.equal(second.requestedUrl, rootUrl + "fake-link");
+                    assert.equal(second.url, rootUrl + "fake-link");
                     assert.equal(second.frameId, firstFrameId);
 
                     assert.equal(third.type, "request");
@@ -65,7 +65,7 @@ describe("links", function () {
                     const [first, second] = results;
 
                     assert.equal(first.type, "navigation");
-                    assert.equal(first.requestedUrl, "http://" + handle.host + "/");
+                    assert.equal(first.url, "http://" + handle.host + "/");
                     const firstFrameId = first.frameId;
 
                     // Request entry for the iframe request
@@ -103,14 +103,14 @@ describe("links", function () {
 
                     const firstFrameId = first.frameId;
                     assert.equal(first.type, "navigation");
-                    assert.equal(first.requestedUrl, testHost + "/");
+                    assert.equal(first.url, testHost + "/");
 
                     assert.equal(second.type, "request");
                     assert.equal(second.url, testHost + "/iframe");
                     assert.notEqual(second.frameId, firstFrameId);
 
                     assert.equal(third.type, "navigation");
-                    assert.equal(third.requestedUrl, "https://doesnotexist.co.uk/");
+                    assert.equal(third.url, "https://doesnotexist.co.uk/");
                     assert.equal(third.frameId, firstFrameId);
 
                     handle.close();
