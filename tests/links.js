@@ -9,7 +9,7 @@ describe("links", function () {
     describe("rewriting urls", function () {
         this.timeout(10000);
 
-        it("requests should appear when the URL is different from the link href", done => {
+        it("navigation records should record what URL was actually fetched", done => {
             const onServer = handle => {
                 const rootUrl = "http://" + handle.host + "/";
                 const crawlArgs = {
@@ -19,20 +19,16 @@ describe("links", function () {
 
                 crawler.setIsTesting(true);
                 crawler.crawl(crawlArgs, results => {
-                    assert.equal(results.length, 3);
-                    const [first, second, third] = results;
+                    assert.equal(results.length, 2);
+                    const [first, second] = results;
 
                     assert.equal(first.type, "navigation");
                     assert.equal(first.url, rootUrl);
-                    const firstFrameId = first.frameId;
 
                     assert.equal(second.type, "navigation");
-                    assert.equal(second.url, rootUrl + "fake-link");
-                    assert.equal(second.frameId, firstFrameId);
-
-                    assert.equal(third.type, "request");
-                    assert.equal(third.url, rootUrl + "true-link");
-                    assert.equal(third.frameId, firstFrameId);
+                    assert.equal(second.expectedUrl, rootUrl + "fake-link");
+                    assert.equal(second.url, rootUrl + "true-link");
+                    assert.equal(second.frameId, first.frameId);
 
                     handle.close();
                     done();
