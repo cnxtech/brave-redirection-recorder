@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>Link with lying href</title>
+    </head>
+    <body>
+        <p>The below link directs to a different URL than the link promises</p>
+        <a href="/fake-link">this link is lying</a>
+        <script>
+            (function () {
+                const d = window.document;
+                d.getElementsByTagName("a")[0].addEventListener("click", event => {
+                    d.location = "/true-link";
+                    event.preventDefault();
+                    event.stopPropagation();
+                }, false);
+            }());
+        </script>
+    </body>
+</html>

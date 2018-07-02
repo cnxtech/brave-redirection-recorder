@@ -17,13 +17,11 @@ describe("iframes", function () {
                 };
 
                 crawler.crawl(crawlArgs, results => {
-                    assert.equal(results.length, 3);
+                    assert.equal(results.length, 2);
                     assert.equal(results[0].type, "navigation");
-                    assert.equal(results[1].type, "request");
-                    assert.equal(results[1].frameId, results[0].frameId);
 
-                    assert.equal(results[2].type, "request");
-                    assert.notEqual(results[2].frameId, results[1].frameId);
+                    assert.equal(results[1].type, "request");
+                    assert.notEqual(results[1].frameId, results[0].frameId);
 
                     handle.close();
                     done();
@@ -52,22 +50,19 @@ describe("iframes", function () {
                 };
 
                 crawler.crawl(crawlArgs, results => {
-                    assert.equal(results.length, 4);
-                    assert.equal(results[0].type, "navigation");
-                    const firstFrameId = results[0].frameId;
-
-                    // Request entry for the top level request.
-                    assert.equal(results[1].type, "request");
-                    assert.equal(results[1].frameId, firstFrameId);
+                    assert.equal(results.length, 3);
+                    const [first, second, third] = results;
+                    assert.equal(first.type, "navigation");
+                    const firstFrameId = first.frameId;
 
                     // Request entry for the first iframe request
-                    assert.equal(results[2].type, "request");
-                    const childFrameId = results[2].frameId;
+                    assert.equal(second.type, "request");
+                    const childFrameId = second.frameId;
                     assert.notEqual(childFrameId, firstFrameId);
 
                     // Request entry for the child frame redirection
-                    assert.equal(results[3].type, "request");
-                    assert.equal(results[3].frameId, childFrameId);
+                    assert.equal(third.type, "request");
+                    assert.equal(third.frameId, childFrameId);
 
                     handle.close();
                     done();

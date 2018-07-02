@@ -17,12 +17,10 @@ describe("popups", function () {
                 };
 
                 crawler.crawl(crawlArgs, results => {
-                    assert.equal(results.length, 2);
-                    assert.equal(results[0].type, "navigation");
-                    assert.equal(results[1].type, "request");
-                    const firstFrameId = results[0].frameId;
-                    const secondFrameId = results[0].frameId;
-                    assert.equal(secondFrameId, firstFrameId);
+                    assert.equal(results.length, 1);
+                    const [first] = results;
+                    assert.equal(first.type, "navigation");
+                    assert.equal(first.requestedUrl, "http://" + handle.host + "/");
 
                     handle.close();
                     done();
@@ -52,24 +50,15 @@ describe("popups", function () {
                 };
 
                 crawler.crawl(crawlArgs, results => {
-                    assert.equal(results.length, 4);
+                    assert.equal(results.length, 2);
+                    const [first, second] = results;
 
-                    const firstRequest = results[0];
-                    assert.equal(firstRequest.type, "navigation");
-                    const secondRequest = results[1];
-                    assert.equal(secondRequest.type, "request");
-                    assert.equal(firstRequest.requestedUrl, secondRequest.url);
+                    assert.equal(first.type, "navigation");
+                    assert.equal(first.requestedUrl, "http://" + handle.host + "/");
+                    assert.equal(second.type, "navigation");
+                    assert.equal(second.requestedUrl, "http://" + handle.host + "/link");
 
-                    const thirdRequest = results[2];
-                    assert.equal(thirdRequest.type, "navigation");
-                    const fourthRequest = results[3];
-                    assert.equal(fourthRequest.type, "request");
-                    assert.equal(thirdRequest.requestedUrl, fourthRequest.url);
-
-                    const firstFrameId = results[0].frameId;
-                    results.forEach(record => {
-                        assert.equal(record.frameId, firstFrameId);
-                    });
+                    assert.equal(first.frameId, second.frameId);
 
                     handle.close();
                     done();

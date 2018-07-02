@@ -17,13 +17,19 @@ describe("redirects", function () {
                 };
 
                 crawler.crawl(crawlArgs, results => {
-                    assert.equal(results.length, 4);
-                    assert.equal(results[0].type, "navigation");
-                    const firstFrameId = results[0].frameId;
-                    [1,2,3].forEach(index => {
-                        assert.equal(results[index].type, "request");
-                        assert.equal(results[index].frameId, firstFrameId);
-                    });
+                    assert.equal(results.length, 3);
+                    const [first, second, third] = results;
+                    assert.equal(first.type, "navigation");
+                    assert.equal(first.requestedUrl, "http://" + handle.host + "/1");
+
+                    const firstFrameId = first.frameId;
+                    assert.equal(second.type, "request");
+                    assert.equal(second.frameId, firstFrameId);
+                    assert.equal(second.url, "http://" + handle.host + "/2");
+
+                    assert.equal(third.type, "request");
+                    assert.equal(third.frameId, firstFrameId);
+                    assert.equal(third.url, "http://" + handle.host + "/3");
 
                     handle.close();
                     done();
@@ -59,24 +65,16 @@ describe("redirects", function () {
                 };
 
                 crawler.crawl(crawlArgs, results => {
-                    assert.equal(results.length, 3);
+                    assert.equal(results.length, 2);
+                    const [first, second] = results;
 
-                    const firstRequest = results[0];
-                    assert.equal(firstRequest.type, "navigation");
-                    assert.equal(firstRequest.requestedUrl, testHost + "/1");
+                    assert.equal(first.type, "navigation");
+                    assert.equal(first.requestedUrl, testHost + "/1");
 
-                    const secondRequest = results[1];
-                    assert.equal(secondRequest.type, "request");
-                    assert.equal(secondRequest.url, testHost + "/1");
+                    assert.equal(second.type, "request");
+                    assert.equal(second.url, testHost + "/2");
 
-                    const thirdRequest = results[2];
-                    assert.equal(thirdRequest.type, "request");
-                    assert.equal(thirdRequest.url, testHost + "/2");
-
-                    const firstFrameId = firstRequest.frameId;
-                    results.forEach(aResult => {
-                        assert.equal(aResult.frameId, firstFrameId);
-                    });
+                    assert.equal(first.frameId, second.frameId);
 
                     handle.close();
                     done();
