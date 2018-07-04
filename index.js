@@ -41,10 +41,10 @@ const handler = (args, _, callback) => {
 
     const logger = crawlArgs.debug === true ? console.dir : _ => {};
 
-    if (crawlArgs.debug === false) {
-        crawlArgs.chromePath = chromeHeadlessPath;
-    } else if (args.chromePath !== undefined) {
+    if (args.chromePath !== undefined) {
         crawlArgs.chromePath = args.chromePath;
+    } else if (crawlArgs.debug === false) {
+        crawlArgs.chromePath = chromeHeadlessPath;
     }
 
     logger(`Beginning crawl with following settings:`);
