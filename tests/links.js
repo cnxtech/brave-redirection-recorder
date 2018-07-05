@@ -6,6 +6,42 @@ const testServer = require("./lib/server");
 const crawler = require("../lib/crawl");
 
 describe("links", function () {
+    describe("non-visible urls", function () {
+        this.timeout(10000);
+
+        it("hidden anchors should be clickable too", done => {
+            const onServer = handle => {
+                const rootUrl = "http://" + handle.host + "/";
+                const crawlArgs = {
+                    url: rootUrl,
+                    seconds: 15,
+                };
+
+                crawler.setIsTesting(true);
+                crawler.crawl(crawlArgs, results => {
+                    assert.equal(results.length, 2);
+                    const [first, second] = results;
+
+                    assert.equal(first.type, "navigation");
+                    assert.equal(first.url, rootUrl);
+
+                    assert.equal(second.type, "navigation");
+                    assert.equal(second.url, "https://doesnotexist.co.uk/");
+                    assert.equal(second.frameId, first.frameId);
+
+                    handle.close();
+                    done();
+                });
+            };
+
+            testServer.create({
+                "/": {
+                    fixture: "hidden-link.html",
+                },
+            }, onServer);
+        });
+    });
+
     describe("rewriting urls", function () {
         this.timeout(10000);
 
@@ -47,12 +83,13 @@ describe("links", function () {
     });
 
     describe("in iframes", function () {
-        this.timeout(10000);
+        this.timeout(20000);
 
         it("link in frame that does not redirect parent", done => {
             const onServer = handle => {
+                const rootUrl = "http://" + handle.host + "/";
                 const crawlArgs = {
-                    url: "http://" + handle.host + "/",
+                    url: rootUrl,
                     seconds: 15,
                 };
 
@@ -61,14 +98,14 @@ describe("links", function () {
                     const [first, second] = results;
 
                     assert.equal(first.type, "navigation");
-                    assert.equal(first.url, "http://" + handle.host + "/");
+                    assert.equal(first.url, rootUrl);
                     const firstFrameId = first.frameId;
 
                     // Request entry for the iframe request
                     assert.equal(second.type, "request");
                     const childFrameId = second.frameId;
                     assert.notEqual(childFrameId, firstFrameId);
-                    assert.equal(second.url, "http://" + handle.host + "/iframe");
+                    assert.equal(second.url, rootUrl + "iframe");
 
                     handle.close();
                     done();
