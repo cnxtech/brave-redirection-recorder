@@ -65,7 +65,7 @@ const handler = (args, _, callback) => {
             })
             .then(_ => {
                 logger(`Launched lambda function for ${args.bucket}:${s3KeyHandle}.`);
-                callback(crawlResults);
+                callback(null, crawlResults);
             });
     };
 
