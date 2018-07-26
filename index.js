@@ -28,6 +28,14 @@ const localResourcesDir = path.join(__dirname, "resources");
 const chromeHeadlessPath = path.join(localResourcesDir, "headless-chromium");
 
 const handler = (args, _, callback) => {
+    if (args.Records !== undefined) {
+        if (args.Records.length > 0) {
+            if (args.Records[0].body !== undefined) {
+                args.url = args.Records[0].body;
+            }
+        }
+    }
+
     const validationResult = utilsLib.validateArgs(args);
     if (validationResult !== undefined) {
         throw validationResult.msg;
@@ -39,11 +47,11 @@ const handler = (args, _, callback) => {
         debug: args.debug || false,
     };
 
-    const logger = crawlArgs.debug === true ? console.dir : _ => {};
+    const logger = crawlArgs.debug === true ? console.dir : _ => { };
 
     if (args.chromePath !== undefined) {
         crawlArgs.chromePath = args.chromePath;
-    } else if (crawlArgs.debug === false) {
+    } else {if (crawlArgs.debug === false) {}
         crawlArgs.chromePath = chromeHeadlessPath;
     }
 
