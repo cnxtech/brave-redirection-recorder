@@ -17,7 +17,7 @@ test:
 build: clean
 	rm -rf $(TMP_WORKSPACE)/
 	mkdir -p $(TMP_WORKSPACE)/resources
-	cp -rn lib node_modules index.js record.js test.js $(TMP_WORKSPACE)
+	cp -r lib node_modules index.js record.js test.js $(TMP_WORKSPACE)
 	rm -rf $(TMP_WORKSPACE)/node_modules/aws-sdk
 	find $(TMP_WORKSPACE) -type d -name depot_tools | xargs rm -rf
 	find $(TMP_WORKSPACE)/node_modules -type f -name "*.md" | xargs rm -rf
@@ -33,5 +33,6 @@ build: clean
 	cd $(TMP_WORKSPACE) && zip -r $(FUNCTION_NAME).zip *;
 
 deploy:
-	aws --profile brave s3 cp $(TMP_WORKSPACE)/$(FUNCTION_NAME).zip s3://$(S3_BUCKET)/$(FUNCTION_NAME).zip
-	aws --profile brave lambda update-function-code --function-name $(FUNCTION_NAME) --s3-bucket $(S3_BUCKET) --s3-key $(FUNCTION_NAME).zip
+	aws s3 cp $(TMP_WORKSPACE)/$(FUNCTION_NAME).zip s3://$(S3_BUCKET)/$(FUNCTION_NAME).zip
+	aws lambda update-function-configuration --function-name $(FUNCTION_NAME) --environment Variables={S3_BUCKET=com.brave.research.redirections.unprocessed}
+	aws lambda update-function-code --function-name $(FUNCTION_NAME) --s3-bucket $(S3_BUCKET) --s3-key $(FUNCTION_NAME).zip
