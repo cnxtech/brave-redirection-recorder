@@ -13,11 +13,11 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^4.19.1",
-    "mocha": "^5.2.0"
+    "mocha": "^10.2.0"
   },
   "dependencies": {
     "aws-sdk": "^2.266.1",
-    "parse-domain": "^2.1.2",
+    "parse-domain": "^2.3.4",
     "puppeteer": "^1.6.1",
     "shuffle-array": "^1.0.1",
     "uuid": "^3.3.0"
